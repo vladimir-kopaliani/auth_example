@@ -27,7 +27,7 @@ func main() {
 
 	// repository
 	repo, err := authrepo.New(ctx, &authrepo.Configuration{
-		URI: os.Getenv("DB_ADDRESS"),
+		URI: os.Getenv("MONGODB_URI"),
 	})
 	if err != nil {
 		log.Println(err)
@@ -47,7 +47,7 @@ func main() {
 	httpServer, err := serverhttp.New(
 		ctx,
 		serverhttp.Configuration{
-			Port:    os.Getenv("HTTP_PORT"),
+			Port:    os.Getenv("PORT"),
 			Service: serv,
 		})
 	if err != nil {
