@@ -9,9 +9,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"go.mongodb.org/mongo-driver/x/mongo/driver/connstring"
 )
 
-const (
+var (
 	databaseName       = "auth"
 	authCollectionName = "users"
 )
@@ -68,6 +69,10 @@ func New(ctx context.Context, conf *Configuration) (*Repository, error) {
 	}
 
 	log.Println("Connected to Database")
+
+	if cs, err := connstring.Parse(conf.URI); err == nil && cs.Database != "" {
+		databaseName = cs.Database
+	}
 
 	db := client.Database(databaseName)
 	authCollection := db.Collection(authCollectionName)
